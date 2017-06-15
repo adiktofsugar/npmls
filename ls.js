@@ -51,6 +51,33 @@ const getDependencies = packageJson => Object.assign({},
     packageJson.dependencies || {},
     packageJson.devDependencies || {});
 
+const flatten = arr => {
+  const flattened = [];
+  arr.forEach(item => {
+    if ((item instanceof Array)) {
+      flatten(item).forEach(i => flattened.push(i));
+    } else {
+      flattened.push(item);
+    }
+  })
+  return flattened;
+}
+
+const getNodeModules = (baseNodeModulesPath, relativePath='') => {
+  const nodeModulesPath = path.join(baseNodeModulesPath, relativePath);
+  return Promise.resolve(fs.readdirSync(nodeModulesPath))
+    .then(nodeModuleNames => Promise.all(
+      nodeModuleNames.map(nodeModuleName => {
+        if (/^@/.test(nodeModuleName)) {
+          // scoped modules are weird
+          return getNodeModules(nodeModulesPath, path.join(relativePath, nodeModuleName))
+        }
+        return Promise.resolve(path.join(relativePath, nodeModuleName));
+      })
+    ))
+    .then(nodeModuleNamesResolved => flatten(nodeModuleNamesResolved));
+}
+
 getRootPath().then(dir => {
   let parentPackageJson;
   try {
@@ -61,9 +88,8 @@ getRootPath().then(dir => {
   const nodeModulesPath = path.join(dir, "node_modules");
   const parentDependencies = getDependencies(parentPackageJson || {});
   
-  return Promise.resolve(fs.readdirSync(nodeModulesPath))
+  return getNodeModules(nodeModulesPath)
     .then(nodeModuleNames => {
-      //console.log('nodeModuleNames', nodeModuleNames)
       return nodeModuleNames.filter(nodeModuleName => {
         for (let i = 0; i < matchers.length; i+=1) {
           let matcher = matchers[0];
