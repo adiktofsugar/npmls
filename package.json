@@ -1,0 +1,21 @@
+{
+  "name": "npm-glob",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "npmls": "./ls.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "findup": "^0.1.5",
+    "minimatch": "^3.0.4",
+    "minimist": "^1.2.0",
+    "promise": "^7.1.1"
+  }
+}
