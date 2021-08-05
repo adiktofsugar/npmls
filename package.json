@@ -1,5 +1,5 @@
 {
-  "name": "npm-glob",
+  "name": "npm-ls",
   "version": "1.1.0",
   "description": "",
   "main": "index.js",
@@ -15,7 +15,7 @@
   "dependencies": {
     "findup": "^0.1.5",
     "minimatch": "^3.0.4",
-    "minimist": "^1.2.0",
+    "minimist": "^1.2.5",
     "promise": "^7.1.1"
   }
 }
