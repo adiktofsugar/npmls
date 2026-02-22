@@ -14,7 +14,7 @@
   "license": "ISC",
   "dependencies": {
     "findup": "^0.1.5",
-    "minimatch": "^3.0.4",
+    "minimatch": "^10.2.1",
     "minimist": "^1.2.5",
     "promise": "^7.1.1"
   }
